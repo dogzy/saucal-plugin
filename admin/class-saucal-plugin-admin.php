@@ -116,4 +116,12 @@ class Saucal_Plugin_Admin {
 		}
 	}
 
+	/**
+	 * Handle rewrite rules when a user switches themes.
+	 */
+	public function woocommerce_flush_rewrite_rules() {
+		flush_rewrite_rules();
+	}
+
+
 }

@@ -158,6 +158,8 @@ class Saucal_Plugin {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		// Check For An Active Woo Install.
 		$this->loader->add_action( 'plugins_loaded', $plugin_admin, 'check_woocommerce_installed' );
+		// Switching theme? Rewrite those rules.
+		$this->loader->add_action( 'after_switch_theme', $plugin_admin, 'woocommerce_flush_rewrite_rules' );
 
 	}
 
