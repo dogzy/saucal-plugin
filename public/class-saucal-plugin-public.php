@@ -147,8 +147,37 @@ class Saucal_Plugin_Public {
 	function my_account_endpoint_content() {
 
 		// Print out some content.
-		echo 'Feed Content';
+		$this->testing_endpoint_content();
 
+	}
+
+	function testing_endpoint_content() {
+
+		// Let's get our data via an endpoint.
+		$request = wp_remote_get( 'https://pippinsplugins.com/edd-api/products' );
+
+		// Make sure there is no error.
+		if ( is_wp_error( $request ) ) {
+			// If there is an error we need to drop out of this code block to prevent further errors.
+			// @todo create a fallback.
+			return false;
+		}
+		// We got some data back, now let's get rid of the stuff we don't need (anything but the body).
+		$body = wp_remote_retrieve_body( $request );
+		// Now in English please!
+		$data = json_decode( $body );
+
+		// Just incase it is a succesful call but empty.
+		if ( ! empty( $data ) ) {
+			// Let's display the data.
+			echo '<ul>';
+			foreach ( $data->products as $product ) {
+				echo '<li>';
+				echo '<a href="' . esc_url( $product->info->link ) . '">' . $product->info->title . '</a>';
+				echo '</li>';
+			}
+			echo '</ul>';
+		}
 	}
 
 }
