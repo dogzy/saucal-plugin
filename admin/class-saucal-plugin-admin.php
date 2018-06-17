@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -44,8 +43,8 @@ class Saucal_Plugin_Admin {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @param      string $plugin_name       The name of this plugin.
+	 * @param      string $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
@@ -98,6 +97,23 @@ class Saucal_Plugin_Admin {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/saucal-plugin-admin.js', array( 'jquery' ), $this->version, false );
 
+	}
+
+	/**
+	 * Show a message to alert the user WooCommerce is needed for this plugin. (and offer a quick link to download it).
+	 */
+	public function saucal_woocommerce_not_active() {
+
+		echo '<div class="error"><p><strong>' . sprintf( esc_html__( 'This plugin requires WooCommerce to be installed and active. You can download %s here.', 'woocommerce-gateway-stripe' ), '<a href="https://woocommerce.com/" target="_blank">WooCommerce</a>' ) . '</strong></p></div>';
+	}
+
+	/**
+	 * Check for an active install of WooCommerce.
+	 */
+	public function check_woocommerce_installed() {
+		if ( ! class_exists( 'WooCommerce' ) ) {
+			add_action( 'admin_notices', 'saucal_woocommerce_not_active' );
+		}
 	}
 
 }
