@@ -102,7 +102,7 @@ class Saucal_Plugin_Admin {
 	/**
 	 * Show a message to alert the user WooCommerce is needed for this plugin. (and offer a quick link to download it).
 	 */
-	public function saucal_woocommerce_not_active() {
+	public function woocommerce_not_active() {
 
 		echo '<div class="error"><p><strong>' . sprintf( esc_html__( 'This plugin requires WooCommerce to be installed and active. You can download %s here.', 'woocommerce-gateway-stripe' ), '<a href="https://woocommerce.com/" target="_blank">WooCommerce</a>' ) . '</strong></p></div>';
 	}
