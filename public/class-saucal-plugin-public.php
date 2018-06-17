@@ -44,8 +44,8 @@ class Saucal_Plugin_Public {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of the plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @param      string $plugin_name       The name of the plugin.
+	 * @param      string $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
@@ -98,6 +98,14 @@ class Saucal_Plugin_Public {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/saucal-plugin-public.js', array( 'jquery' ), $this->version, false );
 
+	}
+
+	/**
+	 * Add our extra menu items within WooCommerce My Account. Feed and Feed Settings
+	 */
+	function my_account_new_endpoints() {
+		 add_rewrite_endpoint( 'feed', EP_ROOT | EP_PAGES );
+		 add_rewrite_endpoint( 'feed-settings', EP_ROOT | EP_PAGES );
 	}
 
 }
