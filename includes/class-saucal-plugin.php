@@ -178,6 +178,12 @@ class Saucal_Plugin {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_action( 'init', $plugin_public, 'my_account_new_endpoints' );
 
+		$this->loader->add_action( 'woocommerce_account_data-feed_endpoint', $plugin_public, 'my_account_endpoint_content' );
+		$this->loader->add_action( 'woocommerce_account_data-feed-options_endpoint', $plugin_public, 'my_account_endpoint_content' );
+
+		$this->loader->add_filter( 'woocommerce_account_menu_items', $plugin_public, 'data_feed_link', 40 );
+		$this->loader->add_filter( 'woocommerce_account_menu_items', $plugin_public, 'data_feed_options_link', 45 );
+
 	}
 
 	/**

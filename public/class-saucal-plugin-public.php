@@ -101,11 +101,54 @@ class Saucal_Plugin_Public {
 	}
 
 	/**
-	 * Add our extra menu items within WooCommerce My Account. Feed and Feed Settings
+	 * Add the Data Feed.
+	 *
+	 * @param      <type> $menu_links  The menu links
+	 *
+	 * @return     <type>  ( description_of_the_return_value )
+	 */
+	function data_feed_link( $menu_links ) {
+
+		$menu_links = array_slice( $menu_links, 0, 5, true )
+		+ array( 'data-feed' => 'Data Feed' )
+		+ array_slice( $menu_links, 5, null, true );
+
+		return $menu_links;
+
+	}
+	/**
+	 * Add the data feed options.
+	 *
+	 * @param      <type> $menu_links  The menu links
+	 *
+	 * @return     <type>  ( description_of_the_return_value )
+	 */
+	function data_feed_options_link( $menu_links ) {
+
+		$menu_links = array_slice( $menu_links, 0, 6, true )
+		+ array( 'data-feed-options' => 'Data Feed Settings' )
+		+ array_slice( $menu_links, 5, null, true );
+
+		return $menu_links;
+
+	}
+
+	/**
+	 * Register the endpoints.
 	 */
 	function my_account_new_endpoints() {
-		 add_rewrite_endpoint( 'feed', EP_ROOT | EP_PAGES );
-		 add_rewrite_endpoint( 'feed-settings', EP_ROOT | EP_PAGES );
+		 add_rewrite_endpoint( 'data-feed', EP_ROOT | EP_PAGES );
+		 add_rewrite_endpoint( 'data-feed-options', EP_ROOT | EP_PAGES );
+	}
+
+	/**
+	 * Testing Content.
+	 */
+	function my_account_endpoint_content() {
+
+		// Print out some content.
+		echo 'Feed Content';
+
 	}
 
 }
