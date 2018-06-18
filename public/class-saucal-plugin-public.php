@@ -153,6 +153,8 @@ class Saucal_Plugin_Public {
 
 	function testing_endpoint_content() {
 
+		var_dump( $_POST );
+
 		// Get the data set if it's available in a transient.
 		$data = $this->check_if_transient_set();
 
@@ -215,9 +217,20 @@ class Saucal_Plugin_Public {
 	</form>
 
 <?php
-$feed_update = $_POST['feed_update'];
-update_user_meta( $user_id, '_feed_update', $feed_update );
-// @todo make a redirect here to go back to feed. With an success alert to show the settings have been updated.
+$feed_update = isset( $_POST['feed_update'] ) ? $_POST['feed_update'] : '';
+if ( ! empty( $feed_update ) ) {
+	update_user_meta( $user_id, '_feed_update', $feed_update );
+}
+	}
+
+	/**
+	 * { function_description }
+	 */
+	function redirect_on_feed_settings_update() {
+		if ( isset( $_POST['feed_update'] ) ) {
+			wp_safe_redirect( home_url( 'my-account/data-feed/?options-updated=' . $_POST['feed_update'] ) );
+			exit;
+		}
 	}
 
 	/**
@@ -245,8 +258,16 @@ update_user_meta( $user_id, '_feed_update', $feed_update );
 	 * @return     <type>  The update preferences.
 	 */
 	function get_update_preferences() {
+		// Get the current user ID.
 		$user_id = get_current_user_id();
+		// Get there update preferences based on meta value.
 		$feed_update_preferences = get_user_meta( $user_id, '_feed_update', true );
+		// If null, set it.
+		if ( empty( $feed_update_preferences ) ) {
+			update_user_meta( $user_id, '_feed_update', 'Hourly' );
+			$feed_update_preferences = 'Hourly';
+		}
+		// Return the preferences.
 		return $feed_update_preferences;
 	}
 
@@ -256,17 +277,24 @@ update_user_meta( $user_id, '_feed_update', $feed_update );
 	 * @return     <type>  ( description_of_the_return_value )
 	 */
 	function check_if_transient_set() {
+		// Get the users update preferences so we are setting the right transient.
 		$feed_update_preferences = $this->get_update_preferences();
+		// Hourly.
 		if ( 'Hourly' === $feed_update_preferences ) {
 			$data = get_transient( 'feed_update_hourly' );
+			// Daily.
 		} elseif ( 'Daily' === $feed_update_preferences ) {
 			$data = get_transient( 'feed_update_daily' );
+			// Weekly.
 		} elseif ( 'Weekly' === $feed_update_preferences ) {
 			$data = get_transient( 'feed_update_weekly' );
+			// Anything else (Monthly).
 		} else {
 			$data = get_transient( 'feed_update_monthly' );
 		}
+		// Check if there is some data.
 		if ( ! empty( $data ) ) {
+			// Return it.
 			return $data;
 		} else {
 			return;

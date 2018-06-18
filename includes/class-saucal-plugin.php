@@ -184,6 +184,9 @@ class Saucal_Plugin {
 		$this->loader->add_filter( 'woocommerce_account_menu_items', $plugin_public, 'data_feed_link', 40 );
 		$this->loader->add_filter( 'woocommerce_account_menu_items', $plugin_public, 'data_feed_options_link', 45 );
 
+		// Custom redirect for settings update front end.
+		$this->loader->add_action( 'wp_loaded', $plugin_public, 'redirect_on_feed_settings_update' );
+
 	}
 
 	/**
