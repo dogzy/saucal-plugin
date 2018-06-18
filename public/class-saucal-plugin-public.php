@@ -252,7 +252,7 @@ class Saucal_Plugin_Public {
 	 * Display how regular the feed is set to update within the users account.
 	 */
 	function display_settings_updated() {
-		$settings_updated_to = isset( $_GET['options-updated'] ) ? $_GET['options-updated'] : '';
+		$settings_updated_to = isset( $_GET['options-updated'] ) ? sanitize_text_field( $_GET['options-updated'] ) : '';
 		if ( ! empty( $settings_updated_to ) ) {
 			echo '<div class="feed-display-message"><p><strong>' . sprintf( esc_html__( 'You feed is currently set to update %s.', 'saucal-plugin' ), $settings_updated_to ) . '</strong></p></div>';
 			// Get the current user ID.
