@@ -21,16 +21,16 @@
 			 <div id="icon-themes" class="icon32"></div>
 		<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 		<?php settings_errors(); ?>
-   
-	<form action="options.php" method="post">
+
+			 <form action="options.php" method="post">
 		<?php
-		// output security fields for the registered setting "wporg"
-		settings_fields( 'saucal-settings' );
-		// output setting sections and their fields
-		// (sections are registered for "wporg", each field is registered to a specific section)
-		do_settings_sections( 'saucal-settings' );
-		// output save settings button
-		submit_button( 'Save Settings' );
+			// output security fields for the registered setting "wporg"
+			settings_fields( 'saucal-settings' );
+			// output setting sections and their fields
+			// (sections are registered for "wporg", each field is registered to a specific section)
+			do_settings_sections( 'saucal-settings' );
+			// output save settings button
+			submit_button( 'Save Settings' );
 		?>
 	</form>
 

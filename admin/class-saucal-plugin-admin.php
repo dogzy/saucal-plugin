@@ -193,7 +193,7 @@ class Saucal_Plugin_Admin {
 	// the values are defined at the add_settings_section() function.
 	public function saucal_section_endpoints_cb( $args ) {
 		?>
-		<p id="<?php esc_attr( $args['id'] ); ?>"><?php esc_html__( 'Follow the white rabbit.', 'saucal-settings' ); ?></p>
+		<p id="<?php echo esc_attr( $args['id'] ); ?>"><?php echo esc_html__( 'Enter your Saucal API details below. (this works for this example - https://pippinsplugins.com/edd-api/products', 'saucal-settings' ); ?></p>
 		<?php
 	}
 
@@ -203,9 +203,9 @@ class Saucal_Plugin_Admin {
 		// output the field
 		?>
 		<input type="url"
-			id="<?php esc_attr( $args['label_for'] ); ?>"
-			class="<?php esc_attr( $args['class'] ); ?>"
-			name="<?php esc_attr( $args['label_for'] ); ?>"
+			id="<?php echo esc_attr( $args['label_for'] ); ?>"
+			class="<?php echo esc_attr( $args['class'] ); ?>"
+			name="<?php echo esc_attr( $args['label_for'] ); ?>"
 			value="
 			<?php
 			if ( isset( $option ) ) :
@@ -215,7 +215,7 @@ endif;
 " />
 
 		<p class="description">
-			<?php esc_html( 'Enter your live API endpoint here.', 'saucal-settings' ); ?>
+			<?php echo esc_html( 'Please enter your live API endpoint (url)', 'saucal-settings' ); ?>
 		</p>
 		<?php
 	}
@@ -226,9 +226,9 @@ endif;
 		// output the field
 		?>
 		<input type="url"
-			id="<?php esc_attr( $args['label_for'] ); ?>"
-			class="<?php esc_attr( $args['class'] ); ?>"
-			name="<?php esc_attr( $args['label_for'] ); ?>"
+			id="<?php echo esc_attr( $args['label_for'] ); ?>"
+			class="<?php echo esc_attr( $args['class'] ); ?>"
+			name="<?php echo esc_attr( $args['label_for'] ); ?>"
 			value="
 			<?php
 			if ( isset( $option ) ) :
@@ -238,28 +238,11 @@ endif;
 " />
 
 		<p class="description">
-			<?php esc_html( 'Enter your test API endpoint here.', 'saucal-settings' ); ?>
+			<?php echo esc_html( 'Please enter your test API endpoint (url)', 'saucal-settings' ); ?>
 		</p>
 		<?php
 	}
-	public function saucal_checkbox( $args ) {
-		$option = get_option( $args['option'] );
-		// output the field
-		?>
-		<input type="checkbox"
-			id="<?php esc_attr( $args['label_for'] ); ?>"
-			class="<?php esc_attr( $args['class'] ); ?>"
-			name="<?php esc_attr( $args['label_for'] ); ?>"
-			<?php
-			if ( isset( $option ) && 'on' === $option ) :
-?>
-checked=checked<?php endif; ?>" />
 
-		<p class="description">
-			<?php esc_html( $args['description'] ); ?>
-		</p>
-		<?php
-	}
 
 	public function saucal_test_mode_cb( $args ) {
 		// get the value of the setting we've registered with register_setting()
@@ -276,7 +259,7 @@ checked=checked<?php endif; ?>" />
 checked=checked<?php endif; ?>" />
 
 		<p class="description">
-			<?php echo esc_html( 'Enable Test Mode.', 'saucal-settings' ); ?>
+			<?php echo esc_html( 'Enable test mode', 'saucal-settings' ); ?>
 		</p>
 		<?php
 	}
@@ -298,8 +281,7 @@ checked=checked<?php endif; ?>" />
 	}
 
 	/**
-	 * top level menu:
-	 * callback functions
+	 * Saucal options page html output.
 	 */
 	public function saucal_options_page_html() {
 
@@ -312,13 +294,8 @@ checked=checked<?php endif; ?>" />
 		// check if the user have submitted the settings
 		// WordPress will add the "settings-updated" $_GET parameter to the url
 		if ( isset( $_GET['settings-updated'] ) ) {
-			// add settings saved message with the class of "updated"
-			add_settings_error( 'saucal_messages', 'wporg_message', __( 'Settings Saved', 'saucal-settings' ), 'updated' );
+			settings_errors( 'saucal_messages' );
 		}
-
-		// show error/update messages
-		settings_errors( 'saucal_messages' );
-
 		require_once  plugin_dir_path( __FILE__ ) . 'partials/saucal-plugin-admin-display.php' ;
 	}
 
