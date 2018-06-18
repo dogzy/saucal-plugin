@@ -122,6 +122,12 @@ class Saucal_Plugin {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-saucal-plugin-public.php';
 
+		/**
+		 * The class responsible for defining all actions that occur in the public-facing
+		 * side of the site.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-saucal-plugin-saucal-widget.php';
+
 		$this->loader = new Saucal_Plugin_Loader();
 
 	}
