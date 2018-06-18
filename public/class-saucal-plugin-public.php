@@ -101,6 +101,23 @@ class Saucal_Plugin_Public {
 	}
 
 	/**
+	 * Get the correct Saucal end point
+	 *
+	 * @return string The Saucal end point URL. Determined by whether test mode is enabled in the plugin settings.
+	 */
+	private function get_saucal_endpoint() {
+
+		$test_mode = get_option( 'saucal_test_mode' );
+
+		if ( isset( $test_mode ) && 'on' === $test_mode ) {
+			$url = get_option( 'saucal_test_endpoint' );
+		} else {
+			$url = get_option( 'saucal_live_endpoint' );
+		}
+		return $url;
+	}
+
+	/**
 	 * Add the Data Feed.
 	 *
 	 * @param      array $menu_links  The menu links.
@@ -164,8 +181,10 @@ class Saucal_Plugin_Public {
 		// If we don't have a transient then we need to do the API call.
 		if ( empty( $data ) ) {
 
+			$url = $this->get_saucal_endpoint();
+
 			// Let's get our data via an endpoint.
-			$request = wp_remote_get( 'https://pippinsplugins.com/edd-api/products' );
+			$request = wp_remote_get( $url );
 
 			// Make sure there is no error.
 			if ( is_wp_error( $request ) ) {
