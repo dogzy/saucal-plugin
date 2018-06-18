@@ -9,6 +9,10 @@ class Saucal_Widget extends WP_Widget {
 
 	function widget( $args, $instance ) {
 		// Widget output
+		$plugin_name = 'saucal-plugin';
+		$version = '1.0.0';
+		$spp = new Saucal_Plugin_Public( $plugin_name, $version );
+		$spp->data_feed_content();
 	}
 
 	function update( $new_instance, $old_instance ) {

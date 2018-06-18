@@ -169,7 +169,7 @@ class Saucal_Plugin_Public {
 	}
 
 	/**
-	 * Data feed content creation. From wither API or transient.
+	 * Data feed content creation. From either API or transient.
 	 */
 	function data_feed_content() {
 
