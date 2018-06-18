@@ -224,4 +224,32 @@ update_user_meta( $user_id, '_feed_update', $feed_update );
 		}
 		return $data;
 	}
+
+	/**
+	 * Get the users update preferences.
+	 *
+	 * @return     <type>  The update preferences.
+	 */
+	function get_update_preferences() {
+		$user_id = get_current_user_id();
+		$feed_update_preferences = get_user_meta( $user_id, '_feed_update', true );
+		return $feed_update_preferences;
+	}
+
+	/**
+	 * Check if a transient has been set.
+	 *
+	 * @param      <type> $feed_update_preferences  The feed update preferences.
+	 *
+	 * @return     <type>  ( description_of_the_return_value )
+	 */
+	function check_if_transient_set( $feed_update_preferences ) {
+		$feed_update_preferences = strtolower( $feed_update_preferences );
+			$transient = get_transient( 'feed_update_' . $feed_update_preferences );
+		if ( ! empty( $transient ) ) {
+			return $transient;
+		} else {
+			return;
+		}
+	}
 }
