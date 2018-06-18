@@ -153,19 +153,33 @@ class Saucal_Plugin_Public {
 
 	function testing_endpoint_content() {
 
-		// Let's get our data via an endpoint.
-		$request = wp_remote_get( 'https://pippinsplugins.com/edd-api/products' );
+		// Get the data set if it's available in a transient.
+		$data = $this->check_if_transient_set();
 
-		// Make sure there is no error.
-		if ( is_wp_error( $request ) ) {
-			// If there is an error we need to drop out of this code block to prevent further errors.
-			// @todo create a fallback.
-			return false;
+		// If we don't have a transient then we need to do the API call.
+		if ( empty( $data ) ) {
+
+			// Let's get our data via an endpoint.
+			$request = wp_remote_get( 'https://pippinsplugins.com/edd-api/products' );
+
+			// Make sure there is no error.
+			if ( is_wp_error( $request ) ) {
+				// If there is an error we need to drop out of this code block to prevent further errors.
+				// @todo create a fallback.
+				return false;
+			}
+			// We got some data back, now let's get rid of the stuff we don't need (anything but the body).
+			$body = wp_remote_retrieve_body( $request );
+			// Now in English please!
+			$data = json_decode( $body );
+
+			// Get our users update preferences so we can set the right transient.
+			$feed_update_preferences = $this->get_update_preferences();
+
+			// Update the transient.
+			$this->set_transient( $data, $feed_update_preferences );
+
 		}
-		// We got some data back, now let's get rid of the stuff we don't need (anything but the body).
-		$body = wp_remote_retrieve_body( $request );
-		// Now in English please!
-		$data = json_decode( $body );
 
 		// Just incase it is a succesful call but empty.
 		if ( ! empty( $data ) ) {
@@ -222,7 +236,7 @@ update_user_meta( $user_id, '_feed_update', $feed_update );
 		} else {
 			set_transient( 'feed_update_monthly', $data, MONTH_IN_SECONDS );
 		}
-		return $data;
+		return;
 	}
 
 	/**
@@ -237,17 +251,23 @@ update_user_meta( $user_id, '_feed_update', $feed_update );
 	}
 
 	/**
-	 * Check if a transient has been set.
-	 *
-	 * @param      <type> $feed_update_preferences  The feed update preferences.
+	 * Check if a transient is set.
 	 *
 	 * @return     <type>  ( description_of_the_return_value )
 	 */
-	function check_if_transient_set( $feed_update_preferences ) {
-		$feed_update_preferences = strtolower( $feed_update_preferences );
-			$transient = get_transient( 'feed_update_' . $feed_update_preferences );
-		if ( ! empty( $transient ) ) {
-			return $transient;
+	function check_if_transient_set() {
+		$feed_update_preferences = $this->get_update_preferences();
+		if ( 'Hourly' === $feed_update_preferences ) {
+			$data = get_transient( 'feed_update_hourly' );
+		} elseif ( 'Daily' === $feed_update_preferences ) {
+			$data = get_transient( 'feed_update_daily' );
+		} elseif ( 'Weekly' === $feed_update_preferences ) {
+			$data = get_transient( 'feed_update_weekly' );
+		} else {
+			$data = get_transient( 'feed_update_monthly' );
+		}
+		if ( ! empty( $data ) ) {
+			return $data;
 		} else {
 			return;
 		}
