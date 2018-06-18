@@ -160,6 +160,9 @@ class Saucal_Plugin {
 		$this->loader->add_action( 'plugins_loaded', $plugin_admin, 'check_woocommerce_installed' );
 		// Switching theme? Rewrite those rules.
 		$this->loader->add_action( 'after_switch_theme', $plugin_admin, 'woocommerce_flush_rewrite_rules' );
+		// Settings page.
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'saucal_settings_init' );
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'saucal_options_page' );
 
 	}
 
