@@ -203,5 +203,25 @@ class Saucal_Plugin_Public {
 <?php
 $feed_update = $_POST['feed_update'];
 update_user_meta( $user_id, '_feed_update', $feed_update );
+// @todo make a redirect here to go back to feed. With an success alert to show the settings have been updated.
+	}
+
+	/**
+	 * Sets the transient.
+	 *
+	 * @param      <type> $data                     The data.
+	 * @param      <type> $feed_update_preferences  The feed update preferences.
+	 */
+	function set_transient( $data, $feed_update_preferences ) {
+		if ( 'Hourly' === $feed_update_preferences ) {
+			set_transient( 'feed_update_hourly', $data, HOUR_IN_SECONDS );
+		} elseif ( 'Daily' === $feed_update_preferences ) {
+			set_transient( 'feed_update_daily', $data, DAY_IN_SECONDS );
+		} elseif ( 'Weekly' === $feed_update_preferences ) {
+			set_transient( 'feed_update_weekly', $data, WEEK_IN_SECONDS );
+		} else {
+			set_transient( 'feed_update_monthly', $data, MONTH_IN_SECONDS );
+		}
+		return $data;
 	}
 }
