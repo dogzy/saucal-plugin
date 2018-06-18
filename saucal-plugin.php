@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       Sau/Cal Plugin
  * Plugin URI:        https://www.jonnyrudd.co.uk
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Description:       This plugin provides a basic wp_remote get feature within my account in WooCommerce.
  * Version:           1.0.0
  * Author:            Jonny Rudd
  * Author URI:        https://www.jonnyrudd.co.uk
