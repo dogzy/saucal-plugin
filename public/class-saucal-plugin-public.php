@@ -103,9 +103,9 @@ class Saucal_Plugin_Public {
 	/**
 	 * Add the Data Feed.
 	 *
-	 * @param      <type> $menu_links  The menu links
+	 * @param      array $menu_links  The menu links.
 	 *
-	 * @return     <type>  ( description_of_the_return_value )
+	 * @return     array  The menu links.
 	 */
 	function data_feed_link( $menu_links ) {
 
@@ -119,9 +119,9 @@ class Saucal_Plugin_Public {
 	/**
 	 * Add the data feed options.
 	 *
-	 * @param      <type> $menu_links  The menu links
+	 * @param      array $menu_links  The menu links.
 	 *
-	 * @return     <type>  ( description_of_the_return_value )
+	 * @return     array  The menu links.
 	 */
 	function data_feed_options_link( $menu_links ) {
 
@@ -142,18 +142,21 @@ class Saucal_Plugin_Public {
 	}
 
 	/**
-	 * Testing Content.
+	 * Data Feed Content.
 	 */
 	function my_account_endpoint_content() {
 
-		// Print out some content.
-		$this->testing_endpoint_content();
+		// Print out some content from the feed.
+		$this->data_feed_content();
 
 	}
 
-	function testing_endpoint_content() {
+	/**
+	 * Data feed content creation. From wither API or transient.
+	 */
+	function data_feed_content() {
 
-		var_dump( $_POST );
+		$this->display_settings_updated();
 
 		// Get the data set if it's available in a transient.
 		$data = $this->check_if_transient_set();
@@ -197,17 +200,14 @@ class Saucal_Plugin_Public {
 	}
 
 	/**
-	 * { function_description }
+	 * Data Feed Settings form.
 	 */
 	function data_feed_settings_endpoint_content() {
 
-		$user_id = get_current_user_id();
-		$feed_update = get_user_meta( $user_id, '_feed_update', true );
-		// @todo create some helper text in this area before the form.
 	?>
 	<form name="feed_update" action="" method="POST">
 		<select name="feed_update">
-			<option value="feed_update"><?php echo 'Please Select'; ?></option>
+			<option value="feed_update"><?php _e( 'Please Select', 'saucal-plugin' ); ?></option>
 			<option value="Hourly">Hourly</option>
 			<option value="Daily">Daily</option>
 			<option value="Weekly">Weekly</option>
@@ -217,19 +217,31 @@ class Saucal_Plugin_Public {
 	</form>
 
 <?php
-$feed_update = isset( $_POST['feed_update'] ) ? $_POST['feed_update'] : '';
-if ( ! empty( $feed_update ) ) {
-	update_user_meta( $user_id, '_feed_update', $feed_update );
-}
 	}
 
 	/**
-	 * { function_description }
+	 * Redirect to feed after settings have been updated/submitted front end.
 	 */
 	function redirect_on_feed_settings_update() {
 		if ( isset( $_POST['feed_update'] ) ) {
 			wp_safe_redirect( home_url( 'my-account/data-feed/?options-updated=' . $_POST['feed_update'] ) );
 			exit;
+		}
+	}
+
+	/**
+	 * Display how regular the feed is set to update within the users account.
+	 */
+	function display_settings_updated() {
+		$settings_updated_to = isset( $_GET['options-updated'] ) ? $_GET['options-updated'] : '';
+		if ( ! empty( $settings_updated_to ) ) {
+			echo '<div class="feed-display-message"><p><strong>' . sprintf( esc_html__( 'You feed is currently set to update %s.', 'saucal-plugin' ), $settings_updated_to ) . '</strong></p></div>';
+			// Get the current user ID.
+			$user_id = get_current_user_id();
+			update_user_meta( $user_id, '_feed_update', $settings_updated_to );
+		} else {
+			$settings_updated_to = $this->get_update_preferences();
+			echo '<div class="feed-display-message"><p><strong>' . sprintf( esc_html__( 'You feed is currently set to update %s.', 'saucal-plugin' ), $settings_updated_to ) . '</strong></p></div>';
 		}
 	}
 
