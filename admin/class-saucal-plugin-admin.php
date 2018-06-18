@@ -261,6 +261,26 @@ checked=checked<?php endif; ?>" />
 		<?php
 	}
 
+	public function saucal_test_mode_cb( $args ) {
+		// get the value of the setting we've registered with register_setting()
+		$option = get_option( 'saucal_test_mode' );
+		// output the field
+		?>
+		<input type="checkbox"
+			id="<?php echo esc_attr( $args['label_for'] ); ?>"
+			class="<?php echo esc_attr( $args['class'] ); ?>"
+			name="<?php echo esc_attr( $args['label_for'] ); ?>"
+			<?php
+			if ( isset( $option ) && 'on' === $option ) :
+?>
+checked=checked<?php endif; ?>" />
+
+		<p class="description">
+			<?php echo esc_html( 'Enable Test Mode.', 'saucal-settings' ); ?>
+		</p>
+		<?php
+	}
+
 
 	/**
 	 * top level menu

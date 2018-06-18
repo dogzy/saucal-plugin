@@ -207,13 +207,13 @@ class Saucal_Plugin_Public {
 	?>
 	<form name="feed_update" action="" method="POST">
 		<select name="feed_update">
-			<option value="feed_update"><?php _e( 'Please Select', 'saucal-plugin' ); ?></option>
+			<option value="" disabled selected idden><?php _e( 'Please Select', 'saucal-plugin' ); ?></option>
 			<option value="Hourly">Hourly</option>
 			<option value="Daily">Daily</option>
 			<option value="Weekly">Weekly</option>
 			<option value="Monthly">Monthly</option>
 		</select>
-		<button type="submit">Update</button>
+		<button type="submit"><?php _e( 'Update', 'saucal-plugin' ); ?></button>
 	</form>
 
 <?php
