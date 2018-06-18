@@ -180,4 +180,28 @@ class Saucal_Plugin_Public {
 		}
 	}
 
+	/**
+	 * { function_description }
+	 */
+	function data_feed_settings_endpoint_content() {
+
+		$user_id = get_current_user_id();
+		$feed_update = get_user_meta( $user_id, '_feed_update', true );
+		// @todo create some helper text in this area before the form.
+	?>
+	<form name="feed_update" action="" method="POST">
+		<select name="feed_update">
+			<option value="feed_update"><?php echo 'Please Select'; ?></option>
+			<option value="Hourly">Hourly</option>
+			<option value="Daily">Daily</option>
+			<option value="Weekly">Weekly</option>
+			<option value="Monthly">Monthly</option>
+		</select>
+		<button type="submit">Update</button>
+	</form>
+
+<?php
+$feed_update = $_POST['feed_update'];
+update_user_meta( $user_id, '_feed_update', $feed_update );
+	}
 }
